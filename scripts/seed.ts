@@ -4,7 +4,7 @@
  */
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import Product from "../models/Product.ts";
+import Product from "../models/Product";
 
 dotenv.config({ path: ".env.local" });
 

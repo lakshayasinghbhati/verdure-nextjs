@@ -8,7 +8,7 @@ export default function HomePage() {
         Free same-day delivery on orders over ₹499
       </div>
       <Hero />
-      <ProductGrid search="apple" />
+      <ProductGrid />
       <footer className="border-t border-white/10 py-10">
         <div className="max-w-7xl mx-auto px-5 md:px-8 flex flex-col md:flex-row justify-between gap-4 text-sm text-porcelain/45">
           <span className="font-display text-lg text-porcelain/80">Verdure</span>

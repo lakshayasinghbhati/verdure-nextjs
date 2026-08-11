@@ -1,4 +1,4 @@
-import mongoose, { Schema, models, model } from "mongoose";
+import mongoose, { Schema, models, model, Types } from "mongoose";
 
 const AddressSchema = new Schema(
   {
@@ -11,8 +11,16 @@ const AddressSchema = new Schema(
   },
   { _id: true }
 );
-
-const UserSchema = new Schema(
+interface IUser {
+  name: string;
+  email: string;
+  passwordHash?: string;
+  image?: string;
+  role: "customer" | "admin";
+  addresses: Types.ObjectId[];
+  wishlist: Types.ObjectId[];
+}
+const UserSchema = new Schema<IUser>(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true, lowercase: true },
@@ -25,4 +33,4 @@ const UserSchema = new Schema(
   { timestamps: true }
 );
 
-export default models.User || model("User", UserSchema);
+export default (models.User as mongoose.Model<IUser>) || model<IUser>("User", UserSchema);
