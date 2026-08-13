@@ -28,9 +28,8 @@ export async function POST(req: Request) {
     return { product: p._id, name: p.name, price: p.price, qty: i.qty };
   });
 
-  const deliveryFee = subtotal >= 499 ? 0 : 40;
-  const total = subtotal + deliveryFee;
-
+  const deliveryFee = 0;
+const total = subtotal + deliveryFee;
   const order = await Order.create({
     user: session.user.id,
     items: orderItems,
