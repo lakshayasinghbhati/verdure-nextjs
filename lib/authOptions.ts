@@ -33,19 +33,38 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = (user as any).id;
-        token.role = (user as any).role || "customer";
-      }
-      // Ensure Google sign-ins get a User document + role synced onto the token
-      if (!user && token.email) {
-        await connectDB();
-        const dbUser = await User.findOne({ email: token.email });
-        if (dbUser) token.role = dbUser.role;
-      }
-      return token;
-    },
+    async jwt({ token, user, account }) {
+  if (account?.provider === "google" && token.email) {
+    await connectDB();
+
+    const dbUser = await User.findOne({
+      email: token.email.toLowerCase(),
+    });
+
+    if (dbUser) {
+      token.id = dbUser._id.toString();
+      token.role = dbUser.role || "customer";
+    }
+  } else if (user) {
+    token.id = (user as any).id;
+    token.role = (user as any).role || "customer";
+  }
+
+  if (!user && token.email) {
+    await connectDB();
+
+    const dbUser = await User.findOne({
+      email: token.email.toLowerCase(),
+    });
+
+    if (dbUser) {
+      token.id = dbUser._id.toString();
+      token.role = dbUser.role || "customer";
+    }
+  }
+
+  return token;
+},
     async session({ session, token }) {
       if (session.user) {
         (session.user as any).id = token.id;
