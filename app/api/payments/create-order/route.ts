@@ -50,17 +50,21 @@ const order = await Order.create({
 if (total === 0) {
   const user = await User.findById(order.user);
 
+  console.log("FREE ORDER USER EMAIL:", user?.email);
+
   if (user?.email) {
     await sendEmail(
       user.email,
       "Order Confirmed – Verdure",
       `
         <h2>Order Confirmed</h2>
-        <p>Your order has been successfully placed.</p>
-        <p>Order Total: ₹0</p>
+        <p>Your order has been confirmed successfully.</p>
+        <p>Order Total: ₹${order.total}</p>
         <p>Thank you for shopping with Verdure.</p>
       `
     );
+
+    console.log("FREE ORDER EMAIL SENT TO:", user.email);
   }
 
   return NextResponse.json({
