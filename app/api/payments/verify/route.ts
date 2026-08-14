@@ -32,7 +32,8 @@ export async function POST(req: Request) {
   order.status = "placed";
   await order.save();
   const user = await User.findById(order.user);
-
+console.log("VERIFY ORDER USER ID:", order.user.toString());
+console.log("VERIFY USER EMAIL:", user?.email);
 console.log("ORDER USER ID:", order.user);
 console.log("USER EMAIL:", user?.email);
 console.log("EMAIL USER:", process.env.EMAIL_USER);
