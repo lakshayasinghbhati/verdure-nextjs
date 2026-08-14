@@ -56,6 +56,12 @@ const data = await res.json();
       
       console.log("RAZORPAY DATA:", data);
       if (!res.ok) throw new Error(data.error || "Could not start checkout.");
+      if (data.freeOrder) {
+  clear();
+  setOrderId(data.orderId);
+  setStep("success");
+  return;
+}
       console.log(data);
       const rzp = new window.Razorpay({
         key: data.keyId,

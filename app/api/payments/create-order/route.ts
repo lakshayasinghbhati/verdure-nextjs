@@ -30,14 +30,28 @@ export async function POST(req: Request) {
 
   const deliveryFee = 0;
 const total = subtotal + deliveryFee;
-  const order = await Order.create({
-    user: session.user.id,
-    items: orderItems,
-    subtotal,
-    deliveryFee,
-    total,
-    address,
+
+const order = await Order.create({
+  user: session.user.id,
+  items: orderItems,
+  subtotal,
+  deliveryFee,
+  total,
+  address,
+
+  payment: {
+    status: total === 0 ? "paid" : "pending",
+  },
+});
+
+if (total === 0) {
+  return NextResponse.json({
+    orderId: order._id,
+    amount: 0,
+    currency: "INR",
+    freeOrder: true,
   });
+}
   console.log("KEY ID:", process.env.RAZORPAY_KEY_ID);
   console.log(
     "SECRET LENGTH:",
