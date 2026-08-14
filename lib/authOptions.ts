@@ -73,6 +73,8 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async signIn({ user, account }) {
+      console.log("GOOGLE SIGN-IN EMAIL:", user.email);
+console.log("GOOGLE SIGN-IN ID:", user.id);
       if (account?.provider === "google") {
         await connectDB();
         const existing = await User.findOne({ email: user.email });

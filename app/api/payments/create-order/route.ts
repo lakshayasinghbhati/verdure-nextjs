@@ -11,6 +11,8 @@ import { sendEmail } from "@/lib/email";
 // Recomputes prices server-side from the DB — never trust client-sent totals.
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
+  console.log("ORDER SESSION USER ID:", session?.user?.id);
+console.log("ORDER SESSION EMAIL:", session?.user?.email);
   if (!session) return NextResponse.json({ error: "Sign in required." }, { status: 401 });
 
   const { items, address } = await req.json();
