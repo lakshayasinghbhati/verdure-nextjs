@@ -5,7 +5,8 @@ import { razorpay } from "@/lib/razorpay";
 import { connectDB } from "@/lib/mongodb";
 import Product from "@/models/Product";
 import Order from "@/models/Order";
-
+import User from "@/models/User";
+import { sendEmail } from "@/lib/email";
 // POST { items: [{ productId, qty }], address }
 // Recomputes prices server-side from the DB — never trust client-sent totals.
 export async function POST(req: Request) {
@@ -45,6 +46,21 @@ const order = await Order.create({
 });
 
 if (total === 0) {
+  const user = await User.findById(order.user);
+
+  if (user?.email) {
+    await sendEmail(
+      user.email,
+      "Order Confirmed – Verdure",
+      `
+        <h2>Order Confirmed</h2>
+        <p>Your order has been successfully placed.</p>
+        <p>Order Total: ₹0</p>
+        <p>Thank you for shopping with Verdure.</p>
+      `
+    );
+  }
+
   return NextResponse.json({
     orderId: order._id,
     amount: 0,

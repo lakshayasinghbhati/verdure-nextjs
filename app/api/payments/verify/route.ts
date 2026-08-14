@@ -6,6 +6,7 @@ import Product from "@/models/Product";
 import User from "@/models/User";
 import { sendEmail } from "@/lib/email";
 
+
 // POST { orderId, razorpay_order_id, razorpay_payment_id, razorpay_signature }
 // Verifies the HMAC signature Razorpay returns after checkout — this is the
 // step that actually confirms money changed hands, never trust the client alone.
