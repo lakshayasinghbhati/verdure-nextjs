@@ -33,6 +33,10 @@ export async function POST(req: Request) {
   await order.save();
   const user = await User.findById(order.user);
 
+console.log("ORDER USER ID:", order.user);
+console.log("USER EMAIL:", user?.email);
+console.log("EMAIL USER:", process.env.EMAIL_USER);
+
 if (user?.email) {
   await sendEmail(
     user.email,

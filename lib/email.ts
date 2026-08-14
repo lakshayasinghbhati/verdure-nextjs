@@ -13,10 +13,14 @@ export async function sendEmail(
   subject: string,
   html: string
 ) {
-  await transporter.sendMail({
-    from: process.env.EMAIL_USER,
-    to,
-    subject,
-    html,
-  });
+  const info = await transporter.sendMail({
+  from: process.env.EMAIL_USER,
+  to,
+  subject,
+  html,
+});
+
+console.log("EMAIL SENT TO:", to);
+console.log("EMAIL ENVELOPE:", info.envelope);
+console.log("MESSAGE ID:", info.messageId);
 }
